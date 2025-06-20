@@ -92,9 +92,27 @@ struct GridStack<Content : View> : View { //Provide any content that conforms to
     
 }
 
+struct TitleBlueFont : ViewModifier {
+    func body(content : Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundStyle(.blue)
+            .fontWeight(.bold)
+            .padding()
+    }
+}
+
+extension View {
+    func titleBlueFont() -> some View {
+        modifier(TitleBlueFont())
+    }
+}
+
 struct ContentView: View {
     
     var body: some View {
+        Text("Prominent Title")
+            .titleBlueFont()
         GridStack(rows: 4, columns: 4) { (row : Int, col: Int) in
             //HStack { //@ViewBuilder let us remove this!
             Image(systemName: "\(row * 4 + col).circle")
