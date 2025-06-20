@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var useRedText = false
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -30,6 +32,20 @@ struct ContentView: View {
                 .padding()
                 .background(.yellow)
                 
+            Button("Conditional") {
+                useRedText.toggle()
+            }
+            .foregroundStyle(useRedText ? .red : .blue)
+            
+            if useRedText {
+                Button("Inefficient code") {
+                    useRedText.toggle()
+                }.foregroundStyle(.red)
+            } else {
+                Button("This makes you create two different Button Views") {
+                    useRedText.toggle()
+                }.foregroundStyle(.blue)
+            } //Sometimes using `if` is unavoidable, but prefer ternary operator when possible.
         }
         
         //.frame(maxWidth:.infinity, maxHeight:.infinity) //Notice that the order matters!
@@ -154,6 +170,11 @@ struct ContentView: View {
 // AND that it's marked with the @ViewBuilder attribute.
 
 //      @ViewBuilder @MainActor var body: Self.Body { get }
+
+// CONDITIONAL MODIFIERS -------------------
+//  You may want some modifiers to apply ONLY when a condition is met.
+//  In Swift, the TERNARY CONDITIONAL OPERATOR is the easiest way to do that.
+
 
 #Preview {
     ContentView()
