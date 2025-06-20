@@ -20,10 +20,68 @@ struct CapsuleText : View {
     }
 }
 
+//Custom modifiers
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundStyle(.white)
+            .padding()
+            .background(.blue)
+            .clipShape(.rect(cornerRadius: 10))
+    }
+}
+
+// When using custom modifiers, usually you can do this, which
+// allows you to use your custom modifier easily.
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title()) //the `return` keyword is implicit here, as we've done before.
+    }
+}
+
+//Custom modifiers can do much more than just apply other existing modifiers
+//  they can also CREATE NEW VIEW STRUCTURE
+//  Modifiers return NEW OBJECTS, so we could create one
+//      that EMBEDS THE VIEW IN A STACK
+//      and adds another View.
+
+struct Watermark : ViewModifier {
+    var text : String
+    
+    func body(content : Content) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            content
+            Text(text)
+                .font(.caption)
+                .foregroundStyle(.white)
+                .padding(5)
+                .background(.black)
+        }
+    }
+}
+
+extension View {
+    func watermarked(with text: String) -> some View {
+        modifier(Watermark(text: text))
+    }
+}
+
+// Custom views modifiers
+//  can have their own Stored Properties
+//  whereas Extensions to View cannot.
+//  So it might be better to add a Custom View Modifier vs a New Method to View.
+
 struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 10) {
+            Color.blue
+                .frame(width: 300, height: 200)
+                .watermarked(with: "Hacking with Swift (Paul)")
+            Text("Hello world")
+                .titleStyle() //Works wonders.
+                //.modifier(Title()) //Applies our vustom modifier!
             CapsuleText(text: "First")
                 .foregroundStyle(.white)
             CapsuleText(text: "Second")
