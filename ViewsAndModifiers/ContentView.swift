@@ -12,10 +12,15 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            VStack {
+                Text("Ringo")
+                    .font(.largeTitle)
+                    .blur(radius: 0) //Does not work, Regular Modifiers
+                Text("Paul")
+                Text("George")
+                Text("Paul")
+            }.font(.title) //ENVIRONMENT MODIFIER.
+                .blur(radius: 5)
             Button("Hello, World!") {
                 print(type(of: self.body))
             }
@@ -175,6 +180,15 @@ struct ContentView: View {
 //  You may want some modifiers to apply ONLY when a condition is met.
 //  In Swift, the TERNARY CONDITIONAL OPERATOR is the easiest way to do that.
 
+// ENVIRONMENT MODIFIERS -------------------
+//  Modifiers can be applied to CONTAINERS
+//  which allows us to apply the same modifier to MANY VIEWS AT THE SAME TIME.
+
+// If any child override that modifier, the child's version takes precedence!
+
+// Regular Modifiers on Child views
+//  BLURS applied to Child Views are ADDED to the VStack, rather than replacing it
+//  that's why it doesn't work.
 
 #Preview {
     ContentView()
