@@ -115,6 +115,46 @@ struct ContentView: View {
 //  each one simply adds to whatever was there before.
 
 //  For example, the padding modifier
+
+// SOME VIEW ----------------------
+//  Opaque Return Types, seen here in `some View`
+//  It means our object conforms to the View protocol, but we don't want to specify what
+
+//  We may not know the view type, but the compiler does
+//  1. Performance
+//      SwiftUI needs to understand how the views change to update the interface
+//      It would be slow if it had to figure out what exactly changed.
+//  2. The way SwiftUI builds up its data using `ModifiedContent`
+//      Remember the button printed instances of `ModifiedContent`
+//      we printed its exact swift type
+//      Well, the `View` PROTOCOL has an ASSOCIATED TYPE attached to it.
+//      We would not be able to just return a `View` object (or struct, whatever)
+
+//      var body: View {} would not work
+//      var body : Text {} does work
+//      That's because a View expects to have some type of view within it!
+//      `View` has a slot that must be filled with some View.
+
+//      `some View` lets us say,
+//      This will be a Button, or a Text, but we can't say exactly what.
+
+// SOME VIEW - COMPLICATIONS
+//  1. How does VStack work? "What kind of content does it have" slot must be filled
+//      A: Behind the scenes Swift creates a `TupleView`,
+//          it just keeps expanding how many items it has.
+//  2. What happens if we send back two views directly from our `body` property,
+//  without wrapping them in a Stack?
+//      A: Swift silently applies a special attribute to the `body` property
+//          called `@ViewBuilder`.
+//          It silently wraps multiple views in those `TupleView` containers
+//          So that even though it looks like we're sending back multiple views,
+//          they get combined into one `TupleView`
+
+//      Right-click on View and choose "Jump to Definition", you'll see that the `body` property is required,
+// AND that it's marked with the @ViewBuilder attribute.
+
+//      @ViewBuilder @MainActor var body: Self.Body { get }
+
 #Preview {
     ContentView()
 }
