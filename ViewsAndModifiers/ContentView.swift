@@ -7,95 +7,29 @@
 
 import SwiftUI
 
+struct CapsuleText : View {
+    var text: String
+    
+    var body : some View {
+        Text(text)
+            .font(.largeTitle)
+            .padding()
+            //.foregroundStyle(.white)
+            .background(.blue)
+            .clipShape(.capsule)
+    }
+}
+
 struct ContentView: View {
-    @State private var useRedText = false
-    let motto1 = Text("Sometimes I see")
-    let motto2 = Text("sometimes I can't")
-    // Careful, unlike the body property, Swift won't automatically apply the @ViewBuilder attribute here!
-    // So if you send MULTIPLE VIEWS
-    // then you have 3 options...
-    var motto3: some View {
-        Text("Sometimes I wish I could see, but I just can't")
-    }
-    
-    // OPTION 1. Place them in a stack
-    //  When you do this, the arrangement of your views is determined by
-    //  how you use them elsewhere in your code.
-    var tools : some View {
-        VStack {
-            Text("Wrench")
-            Text("Hammer")
-        }
-    }
-    
-    // OPTION 2. Place them in a GROUP
-    var kitchenUtensils : some View {
-        Group {
-            Text("Blender")
-            Text("Pan")
-        }
-    }
-    
-    //OPTION 3. You can add the @ViewBuilder attribute yourself.
-    @ViewBuilder var pets : some View {
-        Text("Dog")
-        Text("Cat")
-    }
-    // If you catch yourself adding too much functionality into your properties...
-    // then it's a sign that your Views are getting too complex,
-    // and that you should BREAK THEM UP into parts.
     
     var body: some View {
-        VStack {
-            VStack {
-                motto1
-                    .foregroundStyle(.red)
-                motto2
-                    .foregroundStyle(.green)
-            }
-            VStack {
-                Text("Ringo")
-                    .font(.largeTitle)
-                    .blur(radius: 0) //Does not work, Regular Modifiers
-                Text("Paul")
-                Text("George")
-                Text("Paul")
-            }.font(.title) //ENVIRONMENT MODIFIER.
-                .blur(radius: 5)
-            Button("Hello, World!") {
-                print(type(of: self.body))
-            }
-                .frame(width:200, height:200)
-                .background(.red)
-            
-            Text("Hello World!")
-                .padding()
-                .background(.red)
-                .padding()
-                .background(.blue)
-                .padding()
-                .background(.green)
-                .padding()
-                .background(.yellow)
-                
-            Button("Conditional") {
-                useRedText.toggle()
-            }
-            .foregroundStyle(useRedText ? .red : .blue)
-            
-            if useRedText {
-                Button("Inefficient code") {
-                    useRedText.toggle()
-                }.foregroundStyle(.red)
-            } else {
-                Button("This makes you create two different Button Views") {
-                    useRedText.toggle()
-                }.foregroundStyle(.blue)
-            } //Sometimes using `if` is unavoidable, but prefer ternary operator when possible.
+        VStack(spacing: 10) {
+            CapsuleText(text: "First")
+                .foregroundStyle(.white)
+            CapsuleText(text: "Second")
+                .foregroundStyle(.yellow) //Does no change, unless you remove foregroundStyle from the struct
         }
         
-        //.frame(maxWidth:.infinity, maxHeight:.infinity) //Notice that the order matters!
-        //.background(.red)
     }
 }
 
