@@ -72,9 +72,35 @@ extension View {
 //  whereas Extensions to View cannot.
 //  So it might be better to add a Custom View Modifier vs a New Method to View.
 
+// CUSTOM CONTAINERS --------------------
+struct GridStack<Content : View> : View { //Provide any content that conforms to View. `: View` means this also conforms to View
+    let rows : Int
+    let columns : Int
+    @ViewBuilder let content: (Int, Int) -> Content
+    
+    var body : some View {
+        VStack {
+            ForEach(0..<rows, id: \.self) { (row : Int) in
+                HStack {
+                    ForEach(0..<columns, id: \.self) { (column : Int) in
+                        content(row, column)
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
 struct ContentView: View {
     
     var body: some View {
+        GridStack(rows: 4, columns: 4) { (row : Int, col: Int) in
+            //HStack { //@ViewBuilder let us remove this!
+            Image(systemName: "\(row * 4 + col).circle")
+            Text("R\(row) C\(col)")
+            //}
+        }
         VStack(spacing: 10) {
             Color.blue
                 .frame(width: 300, height: 200)
