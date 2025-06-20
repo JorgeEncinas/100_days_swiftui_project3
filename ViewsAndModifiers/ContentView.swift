@@ -9,9 +9,50 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var useRedText = false
+    let motto1 = Text("Sometimes I see")
+    let motto2 = Text("sometimes I can't")
+    // Careful, unlike the body property, Swift won't automatically apply the @ViewBuilder attribute here!
+    // So if you send MULTIPLE VIEWS
+    // then you have 3 options...
+    var motto3: some View {
+        Text("Sometimes I wish I could see, but I just can't")
+    }
+    
+    // OPTION 1. Place them in a stack
+    //  When you do this, the arrangement of your views is determined by
+    //  how you use them elsewhere in your code.
+    var tools : some View {
+        VStack {
+            Text("Wrench")
+            Text("Hammer")
+        }
+    }
+    
+    // OPTION 2. Place them in a GROUP
+    var kitchenUtensils : some View {
+        Group {
+            Text("Blender")
+            Text("Pan")
+        }
+    }
+    
+    //OPTION 3. You can add the @ViewBuilder attribute yourself.
+    @ViewBuilder var pets : some View {
+        Text("Dog")
+        Text("Cat")
+    }
+    // If you catch yourself adding too much functionality into your properties...
+    // then it's a sign that your Views are getting too complex,
+    // and that you should BREAK THEM UP into parts.
     
     var body: some View {
         VStack {
+            VStack {
+                motto1
+                    .foregroundStyle(.red)
+                motto2
+                    .foregroundStyle(.green)
+            }
             VStack {
                 Text("Ringo")
                     .font(.largeTitle)
@@ -189,6 +230,17 @@ struct ContentView: View {
 // Regular Modifiers on Child views
 //  BLURS applied to Child Views are ADDED to the VStack, rather than replacing it
 //  that's why it doesn't work.
+
+// VIEWS AS PROPERTIES ---------------------
+//  Complex view hierarchies in SwiftUI
+//  can be managed a bit by using PROPERTIES.
+//      Create a View as a Property of your own View
+//      then use that property inside your Layouts.
+
+// HOWEVER, creating one stored property that refers to OTHER stored propeties IS NOT POSSIBLE
+//  So a TextField bound to a local property will cause problems.
+
+// BUT, you can create COMPUTED PROPERTIES
 
 #Preview {
     ContentView()
